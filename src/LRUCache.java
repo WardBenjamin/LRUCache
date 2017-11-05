@@ -1,12 +1,15 @@
 import java.util.HashMap;
+import java.util.LinkedList;
 
 /**
  * An implementation of <tt>Cache</tt> that uses a least-recently-used (LRU)
  * eviction policy.
  */
 public class LRUCache<T, U> implements Cache<T, U> {
-    LinkedList _cache;
-    HashMap<T,U> _dataProvider;
+    DataProvider _dataProvider;
+    LinkedList _frequencyMap;
+    HashMap<T,U> _cache;
+
     int _cacheLength;
 	int _numMiss;
 	/**
@@ -14,7 +17,8 @@ public class LRUCache<T, U> implements Cache<T, U> {
 	 * @param capacity the exact number of (key,value) pairs to store in the cache
 	 */
 	public LRUCache (DataProvider<T, U> provider, int capacity) {
-		_dataProvider = new HashMap<T,U>();
+	    _dataProvider = provider;
+		_cache = new HashMap<T,U>();
 		_cacheLength = capacity;
 	}
 
@@ -25,12 +29,13 @@ public class LRUCache<T, U> implements Cache<T, U> {
 	 */
 	public U get (T key) {
 		U value = _cache.get(key);
+
 		if(value == null){
 			_numMiss++;
 			value = _dataProvider.get(key);
 			_cache.add(key, value);
 		}
-		if(_cache.size() >= _cacheLength){
+		if(_cache.size() > _cacheLength){
 			evict();
 		}
 		return value;
@@ -42,5 +47,9 @@ public class LRUCache<T, U> implements Cache<T, U> {
 	 */
 	public int getNumMisses () {
 		return _numMiss;
+	}
+
+	private void evict () {
+
 	}
 }
