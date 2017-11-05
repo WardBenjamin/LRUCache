@@ -7,7 +7,7 @@ import java.util.HashMap;
 public class LRUCache<T, U> implements Cache<T, U> {
     private DataProvider _dataProvider;
 	private HashMap<T, U> _cache;
-	private CallStack<T, U> _callStack;
+	private CallStack<T> _callStack;
 
 	private int _cacheLength;
 	private int _numMiss;
@@ -35,13 +35,14 @@ public class LRUCache<T, U> implements Cache<T, U> {
 		if(value == null){
 			_numMiss++;
 			value = (U) _dataProvider.get(key);
-//			_cache.add(key, value);
+			_cache.add(key, value);
 		}
-		else{
-
+		else {
+			_callStack._addCall(key);
+			return value;
 		}
 		if(_cache.size() > _cacheLength){
-			evict();
+//			T keyToDelete = _callStack.addAndEvict(key);
 		}
 		return value;
 	}
