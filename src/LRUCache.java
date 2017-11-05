@@ -8,10 +8,28 @@ import java.util.LinkedList;
 public class LRUCache<T, U> implements Cache<T, U> {
     DataProvider _dataProvider;
     LinkedList _frequencyMap;
-    HashMap<T,U> _cache;
+    HashMap<T,node<T,U>> _cache;
 
-    int _cacheLength;
-	int _numMiss;
+    private int _cacheLength;
+	public int _numMiss;
+	private node<T,U> lastUsed;
+	private node<T,U> firstUsed;
+
+
+
+	private class node<T,U> {
+		T key;
+		U value;
+		Node<T,U> previous;
+		Node<T,U> next;
+		node<T,U>(T key, U value, node<T,U> previous, node<T,U> next){
+			this.key = key;
+			this.value = value;
+			this.previous = previous;
+			this.next = next;
+		}
+	}
+
 	/**
 	 * @param provider the data provider to consult for a cache miss
 	 * @param capacity the exact number of (key,value) pairs to store in the cache
@@ -34,6 +52,9 @@ public class LRUCache<T, U> implements Cache<T, U> {
 			_numMiss++;
 			value = _dataProvider.get(key);
 			_cache.add(key, value);
+		}
+		else{
+
 		}
 		if(_cache.size() > _cacheLength){
 			evict();
