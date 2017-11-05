@@ -74,6 +74,11 @@ public class CallStack<T> {
     }
 
     public T addAndEvict(T key) {
-        return key;
+        T keyToDelete = _leastRecentlyUsed._key;
+
+        _leastRecentlyUsed = _leastRecentlyUsed._next;
+        addCall(key);
+
+        return keyToDelete;
     }
 }
