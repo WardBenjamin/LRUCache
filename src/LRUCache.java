@@ -5,11 +5,15 @@ import java.util.HashMap;
  * eviction policy.
  */
 public class LRUCache<T, U> implements Cache<T, U> {
+    LinkedList _cache;
+    HashMap<T,U> _dataProvider;
+
 	/**
 	 * @param provider the data provider to consult for a cache miss
 	 * @param capacity the exact number of (key,value) pairs to store in the cache
 	 */
 	public LRUCache (DataProvider<T, U> provider, int capacity) {
+
 	}
 
 	/**
