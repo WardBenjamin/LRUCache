@@ -8,7 +8,7 @@ public class LRUCache<T, U> implements Cache<T, U> {
     LinkedList _cache;
     HashMap<T,U> _dataProvider;
     int _cacheLength;
-
+	int _numMiss;
 	/**
 	 * @param provider the data provider to consult for a cache miss
 	 * @param capacity the exact number of (key,value) pairs to store in the cache
@@ -25,6 +25,7 @@ public class LRUCache<T, U> implements Cache<T, U> {
 	public U get (T key) {
 		U value = _cache.get(key);
 		if(value == null){
+			_numMiss++;
 			value = _dataProvider.get(key);
 			_cache.add(key, value);
 		}
@@ -39,6 +40,6 @@ public class LRUCache<T, U> implements Cache<T, U> {
 	 * @return the number of cache misses since the object's instantiation.
 	 */
 	public int getNumMisses () {
-		return 0;
+		return _numMiss;
 	}
 }
