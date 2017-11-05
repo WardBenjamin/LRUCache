@@ -1,34 +1,23 @@
 import java.util.HashMap;
-import java.util.LinkedList;
 
 /**
  * An implementation of <tt>Cache</tt> that uses a least-recently-used (LRU)
  * eviction policy.
  */
 public class LRUCache<T, U> implements Cache<T, U> {
-	DataProvider _dataProvider;
-	LinkedList _frequencyMap;
-	HashMap<T,node<T,U>> _cache;
+    private class Node<T, U> {
+        public Node<T, U> _next;
+        public Node<T, U> _previous;
+        public T _key;
+        public U _value;
+    }
+
+    private DataProvider _dataProvider;
+	private HashMap<T, U> _cache;
+	private HashMap<T, Node<T, U>> _callStack;
 
 	private int _cacheLength;
-	public int _numMiss;
-	private node<T,U> lastUsed;
-	private node<T,U> firstUsed;
-
-
-
-	private class node<T,U> {
-		T key;
-		U value;
-		Node<T,U> previous;
-		Node<T,U> next;
-		node<T,U>(T key, U value, node<T,U> previous, node<T,U> next){
-			this.key = key;
-			this.value = value;
-			this.previous = previous;
-			this.next = next;
-		}
-	}
+	private int _numMiss;
 
 	/**
 	 * @param provider the data provider to consult for a cache miss
@@ -36,9 +25,11 @@ public class LRUCache<T, U> implements Cache<T, U> {
 	 */
 	public LRUCache (DataProvider<T, U> provider, int capacity) {
 		_dataProvider = provider;
-		_cache = new HashMap<T,U>();
 		_cacheLength = capacity;
-	}
+
+        _cache = new HashMap<>();
+        _callStack = new HashMap<>();
+    }
 
 	/**
 	 * Returns the value associated with the specified key.
@@ -50,7 +41,7 @@ public class LRUCache<T, U> implements Cache<T, U> {
 
 		if(value == null){
 			_numMiss++;
-			value = _dataProvider.get(key);
+			value = (U) _dataProvider.get(key);
 			_cache.add(key, value);
 		}
 		else{
