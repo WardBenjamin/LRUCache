@@ -5,16 +5,9 @@ import java.util.HashMap;
  * eviction policy.
  */
 public class LRUCache<T, U> implements Cache<T, U> {
-    private class Node<T, U> {
-        public Node<T, U> _next;
-        public Node<T, U> _previous;
-        public T _key;
-        public U _value;
-    }
-
     private DataProvider _dataProvider;
 	private HashMap<T, U> _cache;
-	private HashMap<T, Node<T, U>> _callStack;
+	private CallStack<T, U> _callStack;
 
 	private int _cacheLength;
 	private int _numMiss;
@@ -28,7 +21,7 @@ public class LRUCache<T, U> implements Cache<T, U> {
 		_cacheLength = capacity;
 
         _cache = new HashMap<>();
-        _callStack = new HashMap<>();
+        _callStack = new CallStack<>();
     }
 
 	/**
@@ -42,7 +35,7 @@ public class LRUCache<T, U> implements Cache<T, U> {
 		if(value == null){
 			_numMiss++;
 			value = (U) _dataProvider.get(key);
-			_cache.add(key, value);
+//			_cache.add(key, value);
 		}
 		else{
 
