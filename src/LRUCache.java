@@ -14,7 +14,8 @@ public class LRUCache<T, U> implements Cache<T, U> {
 	 * @param capacity the exact number of (key,value) pairs to store in the cache
 	 */
 	public LRUCache (DataProvider<T, U> provider, int capacity) {
-		_dataProvider = new HashMap
+		_dataProvider = new HashMap<T,U>();
+		_cacheLength = capacity;
 	}
 
 	/**
