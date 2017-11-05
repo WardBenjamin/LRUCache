@@ -23,7 +23,15 @@ public class LRUCache<T, U> implements Cache<T, U> {
 	 * @return the value associated with the key
 	 */
 	public U get (T key) {
-		return null;  // TODO -- implement!
+		U value = _cache.get(key);
+		if(value == null){
+			value = _dataProvider.get(key);
+			_cache.add(key, value);
+		}
+		if(_cache.size() >= _cacheLength){
+			evict();
+		}
+		return value;
 	}
 
 	/**
