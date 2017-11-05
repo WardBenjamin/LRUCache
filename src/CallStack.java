@@ -2,9 +2,9 @@ import java.util.HashMap;
 
 public class CallStack<T> {
     private class Node {
-        public Node _next;
-        public Node _previous;
-        public T _key;
+        Node _next;
+        Node _previous;
+        T _key;
 
         Node(Node next, Node previous, T key) {
             _next = next;

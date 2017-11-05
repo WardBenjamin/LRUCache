@@ -34,6 +34,7 @@ public class LRUCache<T, U> implements Cache<T, U> {
 
 		if (value == null) {
 			_numMiss++;
+
 			value = (U) _dataProvider.get(key);
 
 			_cache.put(key, value);
@@ -59,9 +60,5 @@ public class LRUCache<T, U> implements Cache<T, U> {
 	 */
 	public int getNumMisses () {
 		return _numMiss;
-	}
-
-	private void evict () {
-
 	}
 }
