@@ -21,7 +21,7 @@ public class LRUCache<T, U> implements Cache<T, U> {
 		_cacheLength = capacity;
 
         _cache = new HashMap<>();
-        _callStack = new CallStack<>();
+        _callStack = new CallStack<>(capacity);
     }
 
 	/**
