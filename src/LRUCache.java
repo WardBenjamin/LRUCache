@@ -32,17 +32,23 @@ public class LRUCache<T, U> implements Cache<T, U> {
 	public U get (T key) {
 		U value = _cache.get(key);
 
-		if(value == null){
+		if (value == null) {
 			_numMiss++;
 			value = (U) _dataProvider.get(key);
-			_cache.add(key, value);
+
+			_cache.put(key, value);
+
+			if(_cache.size() > _cacheLength) {
+				T keyToDelete = _callStack.addAndEvict(key);
+
+				_cache.remove(keyToDelete);
+			}
+			else {
+				_callStack.addCall(key);
+			}
 		}
 		else {
-			_callStack._addCall(key);
-			return value;
-		}
-		if(_cache.size() > _cacheLength){
-//			T keyToDelete = _callStack.addAndEvict(key);
+			_callStack.addCall(key);
 		}
 		return value;
 	}

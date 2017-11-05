@@ -26,7 +26,7 @@ public class CallStack<T> {
         _mostRecentlyUsed = null;
     }
 
-    public void _addCall(T key) {
+    public void addCall(T key) {
         if (_queue.size() == 0) {
             Node newCall = new Node(null, null, key);
 
@@ -71,5 +71,9 @@ public class CallStack<T> {
                 _mostRecentlyUsed = node;
             }
         }
+    }
+
+    public T addAndEvict(T key) {
+        return key;
     }
 }
