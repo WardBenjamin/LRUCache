@@ -6,21 +6,38 @@ import java.util.LinkedList;
  * eviction policy.
  */
 public class LRUCache<T, U> implements Cache<T, U> {
-    private DataProvider _dataProvider;
-    private LinkedList _frequencyMap;
-    private HashMap<T,U> _cache;
+	DataProvider _dataProvider;
+	LinkedList _frequencyMap;
+	HashMap<T,node<T,U>> _cache;
 
-    private int _cacheLength;
-	private int _numMiss;
+	private int _cacheLength;
+	public int _numMiss;
+	private node<T,U> lastUsed;
+	private node<T,U> firstUsed;
+
+
+
+	private class node<T,U> {
+		T key;
+		U value;
+		Node<T,U> previous;
+		Node<T,U> next;
+		node<T,U>(T key, U value, node<T,U> previous, node<T,U> next){
+			this.key = key;
+			this.value = value;
+			this.previous = previous;
+			this.next = next;
+		}
+	}
+
 	/**
 	 * @param provider the data provider to consult for a cache miss
 	 * @param capacity the exact number of (key,value) pairs to store in the cache
 	 */
 	public LRUCache (DataProvider<T, U> provider, int capacity) {
-	    _dataProvider = provider;
+		_dataProvider = provider;
+		_cache = new HashMap<T,U>();
 		_cacheLength = capacity;
-
-		_cache = new HashMap<T, U>();
 	}
 
 	/**
@@ -33,8 +50,11 @@ public class LRUCache<T, U> implements Cache<T, U> {
 
 		if(value == null){
 			_numMiss++;
-			value = (U) _dataProvider.get(key);
+			value = _dataProvider.get(key);
 			_cache.add(key, value);
+		}
+		else{
+
 		}
 		if(_cache.size() > _cacheLength){
 			evict();
