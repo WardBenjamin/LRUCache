@@ -65,6 +65,7 @@ public class CallStackTests {
         assertEquals("K4", _cs1.getMRU());
     }
 
+    @Test
     public void checkTreeSimple() {
         _cs1.printMap();
     }
