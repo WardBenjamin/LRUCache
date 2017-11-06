@@ -31,6 +31,7 @@ public class CallStack<T> {
             Node newCall = new Node(null, null, key);
 
             _leastRecentlyUsed = newCall;
+            _mostRecentlyUsed = newCall;
             _queue.put(key, newCall);
         }
         else if (_queue.size() < _capacity) {
@@ -80,5 +81,14 @@ public class CallStack<T> {
         addCall(key);
 
         return keyToDelete;
+    }
+
+    public HashMap<T, Node> getQueue() {
+        return _queue;
+    }
+
+    public void printMap() {
+        System.out.println("MRU: " + _mostRecentlyUsed._key);
+        System.out.println("LRU: " + _leastRecentlyUsed._key);
     }
 }
