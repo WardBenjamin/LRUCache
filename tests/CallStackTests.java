@@ -91,6 +91,7 @@ public class CallStackTests {
 
         System.out.println("---- checkTreeSimple() ----");
         _cs1.printMap();
+        System.out.println("\n");
     }
 
     @Test
@@ -109,6 +110,7 @@ public class CallStackTests {
 
         System.out.println("--- checkLRUEviction() ----");
         _cs1.printMap();
+        System.out.println("\n");
     }
 
     @Test
@@ -118,5 +120,18 @@ public class CallStackTests {
         _cs1.addAndEvict("K5");
 
         assertEquals(5, _cs1.getQueue().size());
+    }
+
+    @Test
+    public void checkLRUDoubleEviction() {
+        simpleCallsJumbled();
+
+        _cs1.addAndEvict("K5");
+
+        assertEquals("K2", _cs1.addAndEvict("K6"));
+
+        System.out.println("--- checkLRUDoubleEviction() ----");
+        _cs1.printMap();
+        System.out.print("\n");
     }
 }
