@@ -101,6 +101,8 @@ public class CallStack<T> {
         T keyToDelete = _leastRecentlyUsed._key;
 
         _leastRecentlyUsed = _leastRecentlyUsed._next;
+        _leastRecentlyUsed._previous = null;
+
         _queue.remove(keyToDelete);
 
         addCall(key);
