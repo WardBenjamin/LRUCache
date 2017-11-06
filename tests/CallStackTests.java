@@ -73,6 +73,8 @@ public class CallStackTests {
         _cs1.addCall("K3");
         _cs1.addCall("K4");
 
+
+        System.out.println("---- checkTreeSimple() ----");
         _cs1.printMap();
     }
 
@@ -96,5 +98,29 @@ public class CallStackTests {
 
         assertEquals("K4", _cs1.getLRU());
         assertEquals("K0", _cs1.getMRU());
+    }
+
+    @Test
+    public void checkLRUEviction() {
+        _cs1.addCall("K0");
+        _cs1.addCall("K1");
+        _cs1.addCall("K2");
+        _cs1.addCall("K3");
+        _cs1.addCall("K4");
+        _cs1.addCall("K1");
+        _cs1.addCall("K0");
+        _cs1.addCall("K4");
+        _cs1.addCall("K4");
+        _cs1.addCall("K3");
+        _cs1.addCall("K3");
+        _cs1.addCall("K2");
+        _cs1.addCall("K1");
+        _cs1.addCall("K3");
+        _cs1.addCall("K0");
+
+        assertEquals("K4", _cs1.addAndEvict("K5"));
+
+        System.out.println("--- checkLRUEviction() ----");
+        _cs1.printMap();
     }
 }
