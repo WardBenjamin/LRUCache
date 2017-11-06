@@ -91,4 +91,12 @@ public class CallStack<T> {
         System.out.println("MRU: " + _mostRecentlyUsed._key);
         System.out.println("LRU: " + _leastRecentlyUsed._key);
     }
+
+    public T getMRU() {
+        return _mostRecentlyUsed._key;
+    }
+
+    public T getLRU () {
+        return _leastRecentlyUsed._key;
+    }
 }
