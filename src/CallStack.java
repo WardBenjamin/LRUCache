@@ -1,4 +1,6 @@
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 public class CallStack<T> {
     private class Node {
@@ -10,6 +12,24 @@ public class CallStack<T> {
             _next = next;
             _previous = previous;
             _key = key;
+        }
+
+        public T getNextKey() {
+            if(_next != null) {
+                return _next._key;
+            }
+            else {
+                return null;
+            }
+        }
+
+        public T getPrevKey() {
+            if(_previous != null) {
+                return _previous._key;
+            }
+            else {
+                return null;
+            }
         }
     }
 
@@ -88,6 +108,19 @@ public class CallStack<T> {
     }
 
     public void printMap() {
+        Iterator iter = (Iterator) _queue.entrySet().iterator();
+
+        while(iter.hasNext()) {
+            Map.Entry entry = (Map.Entry) iter.next();
+
+            System.out.print("Key: ");
+            System.out.print(entry.getKey());
+            System.out.print(" Prev: ");
+            System.out.print(((Node) entry.getValue()).getPrevKey());
+            System.out.print(" Next: ");
+            System.out.println(((Node) entry.getValue()).getNextKey());
+        }
+
         System.out.println("MRU: " + _mostRecentlyUsed._key);
         System.out.println("LRU: " + _leastRecentlyUsed._key);
     }
