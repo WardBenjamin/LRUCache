@@ -1,3 +1,4 @@
+import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.Test;
 import java.util.HashMap;
@@ -19,7 +20,7 @@ public class CallStackTests {
         }
     }
 
-    private DataSource _dp1;
+    private DataSource<String, String> _ds1;
     private CallStack<String> _cs1;
 
     @Before
@@ -29,22 +30,38 @@ public class CallStackTests {
     }
 
     private void initDp1() {
-        _dp1 = new DataSource();
+        _ds1 = new DataSource();
 
-        _dp1.insert("K0", "V0");
-        _dp1.insert("K1", "V1");
-        _dp1.insert("K2", "V2");
-        _dp1.insert("K3", "V3");
-        _dp1.insert("K4", "V4");
-        _dp1.insert("K5", "V5");
-        _dp1.insert("K6", "V6");
-        _dp1.insert("K7", "V7");
-        _dp1.insert("K8", "V8");
-        _dp1.insert("K9", "V9");
+        _ds1.insert("K0", "V0");
+        _ds1.insert("K1", "V1");
+        _ds1.insert("K2", "V2");
+        _ds1.insert("K3", "V3");
+        _ds1.insert("K4", "V4");
+        _ds1.insert("K5", "V5");
+        _ds1.insert("K6", "V6");
+        _ds1.insert("K7", "V7");
+        _ds1.insert("K8", "V8");
+        _ds1.insert("K9", "V9");
+    }
+
+    private void initCs1() {
+        _cs1 = new CallStack<>(5);
     }
 
     @Test
-    public void test1() {
+    public void testLengthInit() {
+        assertEquals(0, _cs1.getQueue().size());
+    }
 
+    @Test
+    public void checkMRUAndLRUSimple() {
+        _cs1.addCall("K0");
+        _cs1.addCall("K1");
+        _cs1.addCall("K2");
+        _cs1.addCall("K3");
+        _cs1.addCall("K4");
+
+        assertEquals("K0", _cs1.getLRU());
+        assertEquals("K4", _cs1.getMRU());
     }
 }
