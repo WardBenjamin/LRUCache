@@ -48,6 +48,29 @@ public class CallStackTests {
         _cs1 = new CallStack<>(5);
     }
 
+    private void simpleCalls() {
+        _cs1.addCall("K0");
+        _cs1.addCall("K1");
+        _cs1.addCall("K2");
+        _cs1.addCall("K3");
+        _cs1.addCall("K4");
+    }
+
+    private void simpleCallsJumbled() {
+        simpleCalls();
+
+        _cs1.addCall("K1");
+        _cs1.addCall("K0");
+        _cs1.addCall("K4");
+        _cs1.addCall("K4");
+        _cs1.addCall("K3");
+        _cs1.addCall("K3");
+        _cs1.addCall("K2");
+        _cs1.addCall("K1");
+        _cs1.addCall("K3");
+        _cs1.addCall("K0");
+    }
+
     @Test
     public void testLengthInit() {
         assertEquals(0, _cs1.getQueue().size());
@@ -55,11 +78,7 @@ public class CallStackTests {
 
     @Test
     public void checkMRUAndLRUSimple() {
-        _cs1.addCall("K0");
-        _cs1.addCall("K1");
-        _cs1.addCall("K2");
-        _cs1.addCall("K3");
-        _cs1.addCall("K4");
+        simpleCalls();
 
         assertEquals("K0", _cs1.getLRU());
         assertEquals("K4", _cs1.getMRU());
@@ -67,11 +86,7 @@ public class CallStackTests {
 
     @Test
     public void checkTreeSimple() {
-        _cs1.addCall("K0");
-        _cs1.addCall("K1");
-        _cs1.addCall("K2");
-        _cs1.addCall("K3");
-        _cs1.addCall("K4");
+        simpleCalls();
 
 
         System.out.println("---- checkTreeSimple() ----");
@@ -80,21 +95,7 @@ public class CallStackTests {
 
     @Test
     public void checkMRUAndLRUComplexNonAdded() {
-        _cs1.addCall("K0");
-        _cs1.addCall("K1");
-        _cs1.addCall("K2");
-        _cs1.addCall("K3");
-        _cs1.addCall("K4");
-        _cs1.addCall("K1");
-        _cs1.addCall("K0");
-        _cs1.addCall("K4");
-        _cs1.addCall("K4");
-        _cs1.addCall("K3");
-        _cs1.addCall("K3");
-        _cs1.addCall("K2");
-        _cs1.addCall("K1");
-        _cs1.addCall("K3");
-        _cs1.addCall("K0");
+        simpleCallsJumbled();
 
         assertEquals("K4", _cs1.getLRU());
         assertEquals("K0", _cs1.getMRU());
@@ -102,25 +103,20 @@ public class CallStackTests {
 
     @Test
     public void checkLRUEviction() {
-        _cs1.addCall("K0");
-        _cs1.addCall("K1");
-        _cs1.addCall("K2");
-        _cs1.addCall("K3");
-        _cs1.addCall("K4");
-        _cs1.addCall("K1");
-        _cs1.addCall("K0");
-        _cs1.addCall("K4");
-        _cs1.addCall("K4");
-        _cs1.addCall("K3");
-        _cs1.addCall("K3");
-        _cs1.addCall("K2");
-        _cs1.addCall("K1");
-        _cs1.addCall("K3");
-        _cs1.addCall("K0");
+        simpleCallsJumbled();
 
         assertEquals("K4", _cs1.addAndEvict("K5"));
 
         System.out.println("--- checkLRUEviction() ----");
         _cs1.printMap();
+    }
+
+    @Test
+    public void checkLRUEvictionSize() {
+        simpleCallsJumbled();
+
+        _cs1.addAndEvict("K5");
+
+        assertEquals(5, _cs1.getQueue().size());
     }
 }
