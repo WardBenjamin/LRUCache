@@ -67,6 +67,34 @@ public class CallStackTests {
 
     @Test
     public void checkTreeSimple() {
+        _cs1.addCall("K0");
+        _cs1.addCall("K1");
+        _cs1.addCall("K2");
+        _cs1.addCall("K3");
+        _cs1.addCall("K4");
+
         _cs1.printMap();
+    }
+
+    @Test
+    public void checkMRUAndLRUComplexNonAdded() {
+        _cs1.addCall("K0");
+        _cs1.addCall("K1");
+        _cs1.addCall("K2");
+        _cs1.addCall("K3");
+        _cs1.addCall("K4");
+        _cs1.addCall("K1");
+        _cs1.addCall("K0");
+        _cs1.addCall("K4");
+        _cs1.addCall("K4");
+        _cs1.addCall("K3");
+        _cs1.addCall("K3");
+        _cs1.addCall("K2");
+        _cs1.addCall("K1");
+        _cs1.addCall("K3");
+        _cs1.addCall("K0");
+
+        assertEquals("K4", _cs1.getLRU());
+        assertEquals("K0", _cs1.getMRU());
     }
 }

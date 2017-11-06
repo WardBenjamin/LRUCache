@@ -71,7 +71,9 @@ public class CallStack<T> {
                 Node newLRU = node._next;
 
                 node._previous = _mostRecentlyUsed;
+                _mostRecentlyUsed._next = node;
                 node._next = null;
+
                 _mostRecentlyUsed = node;
 
                 newLRU._previous = null;
@@ -84,6 +86,7 @@ public class CallStack<T> {
                 Node next = node._next;
 
                 node._previous = _mostRecentlyUsed;
+                _mostRecentlyUsed._next = node;
                 node._next = null;
 
                 next._previous = previous;
