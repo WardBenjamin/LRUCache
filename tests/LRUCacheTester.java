@@ -22,6 +22,7 @@ public class LRUCacheTester {
             return _data.get(key);
         }
     }
+
     Cache<Integer, Integer> _testCache;
 
     public void initServer() {
@@ -62,5 +63,26 @@ public class LRUCacheTester {
         assertEquals(_testCache.get(1),_server.get(1));
         assertEquals(_testCache.get(1),_server.get(1));
         assertEquals(_testCache.get(6),_server.get(6));
+    }
+
+    @Test
+    public void testCacheLength() {
+        _testCache.get(1);
+        _testCache.get(2);
+
+        assertEquals(2, ((LRUCache) _testCache).getCacheLength());
+
+        _testCache.get(2);
+        assertEquals(2, ((LRUCache) _testCache).getCacheLength());
+
+        _testCache.get(3);
+        assertEquals(3, ((LRUCache) _testCache).getCacheLength());
+
+        _testCache.get(4);
+        _testCache.get(5);
+        assertEquals(5, ((LRUCache) _testCache).getCacheLength());
+
+        _testCache.get(6);
+        assertEquals(5, ((LRUCache) _testCache).getCacheLength());
     }
 }
