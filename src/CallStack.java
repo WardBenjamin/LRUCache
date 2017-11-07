@@ -63,10 +63,10 @@ public class CallStack<T> {
             _queue.put(key, newCall);
         }
         else {
-            if(key == _mostRecentlyUsed._key) {
+            if(key.equals(_mostRecentlyUsed._key)) {
                 assert true;
             }
-            else if (key == _leastRecentlyUsed._key) {
+            else if (key.equals(_leastRecentlyUsed._key)) {
                 Node node = _queue.get(key);
                 Node newLRU = node._next;
 

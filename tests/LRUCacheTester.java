@@ -1,4 +1,5 @@
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.Test;
 import java.util.HashMap;
@@ -6,6 +7,7 @@ import java.util.HashMap;
 public class LRUCacheTester {
 
     private DataSource _server;
+
     private class DataSource<T, U> implements DataProvider<T, U> {
         private HashMap<T, U> _data;
         public String log = "";
@@ -84,5 +86,41 @@ public class LRUCacheTester {
 
         _testCache.get(6);
         assertEquals(5, ((LRUCache) _testCache).getCacheLength());
+    }
+
+    @Test
+    public void testTimeComplexity() {
+        final DataSource<Integer, Integer> miniServer = new DataSource<>();
+
+        for (int i = 0; i < 42069; i++) {
+            miniServer._data.put(i, i);
+        }
+
+        LRUCache<Integer, Integer> smallCache = new LRUCache(miniServer, 5);
+        LRUCache<Integer, Integer> bigCache = new LRUCache(miniServer, 690);
+
+        smallCache.get(5000);
+        smallCache.get(5001);
+        smallCache.get(5002);
+        smallCache.get(5000);
+
+        for (int i = 0; i < 700; i++) {
+            bigCache.get(i);
+        }
+
+        bigCache.get(5000);
+        bigCache.get(5001);
+        bigCache.get(5002);
+        bigCache.get(5000);
+
+        final long smallStart = System.nanoTime();
+        final int smallAnwser = smallCache.get(5002);
+        final long smallTime = System.nanoTime() - smallStart;
+
+        final long bigStart = System.nanoTime();
+        final int bigAnswer = bigCache.get(5002);
+        final long bigTime = System.nanoTime() - bigStart;
+
+        assertTrue(Math.abs(bigTime - smallTime) < .5 * smallAnwser || bigAnswer == smallAnwser);
     }
 }
