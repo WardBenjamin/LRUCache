@@ -19,7 +19,7 @@ public class CacheTest {
 		public void insert(T key, U value) {
 			_data.put(key, value);
 		}
-
+		public void clearLog(){log = "";}
 		public U get(T key) {
 			log+= key.toString();
 			return _data.get(key);
@@ -28,14 +28,20 @@ public class CacheTest {
 
 	public void initServer() {
 		this._server = new DataSource<Integer,Integer>();
-		for(int i = 0; i <99; i++)
+		for(int i = 0; i <200; i++)
 			_server._data.put(i,dataCreator(i));
 	}
 
 	public Integer dataCreator(int i) { return ((i * 69 - 420) ^2); }
 
+	/*
+	This test verifies that the cache actually returns the correct values, in addition to verifying that the cache
+	actually cache's values and only calls the data provider when necessary.
+	 */
 	@Test
 	public void testCacheWorksProperly () {
+
+		//Basic tests
 		initServer();
 		LRUCache<Integer,Integer> testcache = new LRUCache<Integer, Integer>(_server,5);
 		assertEquals(testcache.get(1),dataCreator(1));
@@ -55,6 +61,17 @@ public class CacheTest {
 		assertEquals(testcache.get(2),dataCreator(2));
 		assertEquals(_server.log , "1234562");
 
+		//Testing a large cache
+		initServer();
+		testcache = new LRUCache<Integer, Integer>(_server, 80);
+		for (int i = 0; i < 80; i++) {
+			assertEquals(testcache.get(i), dataCreator(i));
+		}
+		_server.clearLog();
+        assertEquals(testcache.get(3),dataCreator(3));
+        assertEquals(testcache.get(51),dataCreator(51));
+        assertEquals(testcache.get(81),dataCreator(81));
+        assertEquals(_server.log, "81");
 
 	}
 }
