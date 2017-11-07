@@ -103,6 +103,12 @@ public class LRUCacheTester {
         smallCache.get(5001);
         smallCache.get(5002);
         smallCache.get(5000);
+        smallCache.get(5005);
+        smallCache.get(5003);
+        smallCache.get(5001);
+        smallCache.get(5007);
+        smallCache.get(5002);
+        smallCache.get(5000);
 
         for (int i = 0; i < 700; i++) {
             bigCache.get(i);
@@ -113,14 +119,29 @@ public class LRUCacheTester {
         bigCache.get(5002);
         bigCache.get(5000);
 
+        System.out.println("Small Cache");
+        smallCache.printCache();
+        System.out.println(smallCache.getMRU());
+        System.out.println(smallCache.getLRU());
+        System.out.println("\n");
+
+        System.out.println("Big Cache");
+        bigCache.printCache();
+        System.out.println(bigCache.getMRU());
+        System.out.println(bigCache.getLRU());
+        System.out.println("\n");
+
         final long smallStart = System.nanoTime();
-        final int smallAnwser = smallCache.get(5002);
+        final int smallAnswer = smallCache.get(5002);
         final long smallTime = System.nanoTime() - smallStart;
 
         final long bigStart = System.nanoTime();
         final int bigAnswer = bigCache.get(5002);
         final long bigTime = System.nanoTime() - bigStart;
 
-        assertTrue(Math.abs(bigTime - smallTime) < .5 * smallAnwser || bigAnswer == smallAnwser);
+        System.out.println(bigTime);
+        System.out.println(smallTime);
+
+        assertTrue(Math.abs(bigTime - smallTime) < smallAnswer && bigAnswer == smallAnswer);
     }
 }
