@@ -47,6 +47,8 @@ public class CallStack<T> {
     }
 
     public void addCall(T key) {
+        final Node node = _queue.get(key);
+
         if (_queue.size() == 0) {
             Node newCall = new Node(null, null, key);
 
@@ -54,7 +56,7 @@ public class CallStack<T> {
             _mostRecentlyUsed = newCall;
             _queue.put(key, newCall);
         }
-        else if (_queue.size() < _capacity && !(_queue.containsKey(key))) {
+        else if (_queue.size() < _capacity && (node == null)) {
             Node newCall = new Node(null, _mostRecentlyUsed, key);
 
             _mostRecentlyUsed._next = newCall;
@@ -67,7 +69,6 @@ public class CallStack<T> {
                 assert true;
             }
             else if (key.equals(_leastRecentlyUsed._key)) {
-                Node node = _queue.get(key);
                 Node newLRU = node._next;
 
                 node._previous = _mostRecentlyUsed;
@@ -80,8 +81,6 @@ public class CallStack<T> {
                 _leastRecentlyUsed = newLRU;
             }
             else {
-                Node node = _queue.get(key);
-
                 Node previous = node._previous;
                 Node next = node._next;
 
