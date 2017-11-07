@@ -8,7 +8,7 @@ import java.util.HashMap;
  * Code to test an <tt>LRUCache</tt> implementation.
  */
 public class CacheTest {
-	private DataSource server;
+	private DataSource _server;
 	private class DataSource<T, U> implements DataProvider<T, U> {
 		private HashMap<T, U> _data;
 		public String log = "";
@@ -26,15 +26,16 @@ public class CacheTest {
 		}
 	}
 
-
 	public void initServer() {
-		this.server = new DataSource<Integer,Integer>();
+		this._server = new DataSource<Integer,Integer>();
 		for(int i = 0; i <99; i++)
-			server._data.put(i,((int)i * 69 - 420) ^2);
+			_server._data.put(i,((int)i * 69 - 420) ^2);
 	}
 
 	@Test
 	public void testCacheWorksProperly () {
+		LRUCache<Integer,Integer> testcache = new LRUCache<Integer, Integer>(_server,5);
+
 
 	}
 }
