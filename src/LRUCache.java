@@ -1,4 +1,6 @@
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 /**
  * An implementation of <tt>Cache</tt> that uses a least-recently-used (LRU)
@@ -64,5 +66,27 @@ public class LRUCache<T, U> implements Cache<T, U> {
 
 	public int getCacheLength() {
 		return _cache.size();
+	}
+
+	//Debug
+	public void printCache() {
+        Iterator iter = (Iterator) _cache.entrySet().iterator();
+
+        while(iter.hasNext()) {
+            Map.Entry entry = (Map.Entry) iter.next();
+
+            System.out.print("Key: ");
+            System.out.println(entry.getKey());
+        }
+    }
+
+	// Debug
+    public T getMRU() {
+		return _callStack.getMRU();
+	}
+
+	// Debug
+	public T getLRU() {
+		return _callStack.getLRU();
 	}
 }
