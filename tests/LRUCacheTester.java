@@ -5,7 +5,7 @@ import java.util.HashMap;
 
 public class LRUCacheTester {
 
-    private DataSource server;
+    private DataSource _server;
     private class DataSource<T, U> implements DataProvider<T, U> {
         private HashMap<T, U> _data;
         public String log = "";
@@ -22,21 +22,22 @@ public class LRUCacheTester {
             return _data.get(key);
         }
     }
-
-    DataProvider<Integer, Integer> _testDataProvider;
     Cache<Integer, Integer> _testCache;
 
+    public void initServer() {
+        _server = new DataSource<Integer,Integer>();
+        for(int i = 0; i <99; i++)
+            _server._data.put(i,((int)i * 69 - 420) ^2);
+    }
 
-    @Test
+    @Before
     public void init(){
-        _testDataProvider = new DataSource<Integer, Integer>();
-        _testCache = new LRUCache<Integer, Integer>(_testDataProvider,5);
+        initServer();
+        _testCache = new LRUCache<Integer, Integer>(_server,5);
     }
 
     @Test
     public void testCacheSize (){
-        init();
-
         _testCache.get(1);
         _testCache.get(2);
         _testCache.get(3);
@@ -50,7 +51,7 @@ public class LRUCacheTester {
         assertEquals(_testCache.getNumMisses(), 6);
 
         _testCache.get(2);
-        assertEquals(_testCache.getNumMisses(), 6);
+        assertEquals(_testCache.getNumMisses(), 7);
 
         _testCache.get(1);
         assertEquals(_testCache.getNumMisses(), 7);
@@ -58,10 +59,8 @@ public class LRUCacheTester {
 
     @Test
     public void testCacheCorrectness(){
-        init();
-
-        assertEquals(_testCache.get(1),_testDataProvider.get(1));
-        assertEquals(_testCache.get(1),_testDataProvider.get(1));
-        assertEquals(_testCache.get(6),_testDataProvider.get(6));
+        assertEquals(_testCache.get(1),_server.get(1));
+        assertEquals(_testCache.get(1),_server.get(1));
+        assertEquals(_testCache.get(6),_server.get(6));
     }
 }
