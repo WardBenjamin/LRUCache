@@ -120,7 +120,8 @@ public class LRUCacheTester {
         final long bigStart = System.nanoTime();
         final int bigAnswer = bigCache.get(5002);
         final long bigTime = System.nanoTime() - bigStart;
-
-        assertTrue(Math.abs(bigTime - smallTime) < .5 * smallAnwser || bigAnswer == smallAnwser);
+        System.out.println(bigTime);
+        System.out.println(smallTime);
+        assertTrue((Math.abs(bigTime - smallTime) < (.5 * smallAnwser)));
     }
 }

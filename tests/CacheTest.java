@@ -60,6 +60,7 @@ public class CacheTest {
 		assertEquals(_server.log , "123456");
 		assertEquals(testcache.get(2),dataCreator(2));
 		assertEquals(_server.log , "1234562");
+		assertEquals(testcache.getNumMisses(), 7);
 
 		//Testing a large cache
 		initServer();
@@ -72,6 +73,7 @@ public class CacheTest {
         assertEquals(testcache.get(51),dataCreator(51));
         assertEquals(testcache.get(81),dataCreator(81));
         assertEquals(_server.log, "81");
+        assertEquals(testcache.getNumMisses(), 81);
 
 	}
 }
