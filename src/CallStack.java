@@ -54,7 +54,7 @@ public class CallStack<T> {
             _mostRecentlyUsed = newCall;
             _queue.put(key, newCall);
         }
-        else if (_queue.size() < _capacity) {
+        else if (_queue.size() < _capacity && !(_queue.containsKey(key))) {
             Node newCall = new Node(null, _mostRecentlyUsed, key);
 
             _mostRecentlyUsed._next = newCall;

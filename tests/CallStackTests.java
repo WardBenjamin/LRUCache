@@ -77,6 +77,17 @@ public class CallStackTests {
     }
 
     @Test
+    public void testLengthAddedButNotFull() {
+        _cs1.addCall("K0");
+        _cs1.addCall("K1");
+        _cs1.addCall("K2");
+        _cs1.addCall("K1");
+        _cs1.addCall("K1");
+
+        assertEquals(3, _cs1.getQueue().size());
+    }
+
+    @Test
     public void checkMRUAndLRUSimple() {
         simpleCalls();
 
@@ -90,6 +101,20 @@ public class CallStackTests {
 
 
         System.out.println("---- checkTreeSimple() ----");
+        _cs1.printMap();
+        System.out.println("\n");
+    }
+
+    @Test
+    public void checkTreeAddedButNotFull() {
+        _cs1.addCall("K0");
+        _cs1.addCall("K1");
+        _cs1.addCall("K2");
+        _cs1.addCall("K1");
+        _cs1.addCall("K1");
+
+
+        System.out.println("---- checkTreeAddedButNotFull() ----");
         _cs1.printMap();
         System.out.println("\n");
     }
