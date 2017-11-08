@@ -96,21 +96,23 @@ public class LRUCacheTester {
             miniServer._data.put(i, i);
         }
 
-        LRUCache<Integer, Integer> smallCache = new LRUCache(miniServer, 5);
-        LRUCache<Integer, Integer> bigCache = new LRUCache(miniServer, 690);
+        LRUCache<Integer, Integer> smallCache = new LRUCache(miniServer, 3000);
+        LRUCache<Integer, Integer> bigCache = new LRUCache(miniServer, 8000);
+
+        for (int i = 0; i < 2000; i++ ){
+            smallCache.get(i);
+        }
 
         smallCache.get(5000);
         smallCache.get(5001);
         smallCache.get(5002);
         smallCache.get(5000);
-        smallCache.get(5005);
-        smallCache.get(5003);
-        smallCache.get(5001);
-        smallCache.get(5007);
-        smallCache.get(5002);
-        smallCache.get(5000);
 
-        for (int i = 0; i < 700; i++) {
+        for (int i = 0; i < 2000; i++ ){
+            smallCache.get(i);
+        }
+
+        for (int i = 0; i < 7000; i++) {
             bigCache.get(i);
         }
 
@@ -119,29 +121,15 @@ public class LRUCacheTester {
         bigCache.get(5002);
         bigCache.get(5000);
 
-        System.out.println("Small Cache");
-        smallCache.printCache();
-        System.out.println(smallCache.getMRU());
-        System.out.println(smallCache.getLRU());
-        System.out.println("\n");
-
-        System.out.println("Big Cache");
-        bigCache.printCache();
-        System.out.println(bigCache.getMRU());
-        System.out.println(bigCache.getLRU());
-        System.out.println("\n");
-
         final long smallStart = System.nanoTime();
-        final int smallAnswer = smallCache.get(5002);
+        final int smallAnwser = smallCache.get(5002);
         final long smallTime = System.nanoTime() - smallStart;
 
         final long bigStart = System.nanoTime();
         final int bigAnswer = bigCache.get(5002);
         final long bigTime = System.nanoTime() - bigStart;
-
         System.out.println(bigTime);
         System.out.println(smallTime);
-
-        assertTrue(Math.abs(bigTime - smallTime) < smallAnswer && bigAnswer == smallAnswer);
+        assertTrue((Math.abs(bigTime - smallTime) < smallTime));
     }
 }
