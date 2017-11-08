@@ -96,15 +96,23 @@ public class LRUCacheTester {
             miniServer._data.put(i, i);
         }
 
-        LRUCache<Integer, Integer> smallCache = new LRUCache(miniServer, 5);
-        LRUCache<Integer, Integer> bigCache = new LRUCache(miniServer, 690);
+        LRUCache<Integer, Integer> smallCache = new LRUCache(miniServer, 3000);
+        LRUCache<Integer, Integer> bigCache = new LRUCache(miniServer, 8000);
+
+        for (int i = 0; i < 2000; i++ ){
+            smallCache.get(i);
+        }
 
         smallCache.get(5000);
         smallCache.get(5001);
         smallCache.get(5002);
         smallCache.get(5000);
 
-        for (int i = 0; i < 700; i++) {
+        for (int i = 0; i < 2000; i++ ){
+            smallCache.get(i);
+        }
+
+        for (int i = 0; i < 7000; i++) {
             bigCache.get(i);
         }
 
@@ -122,6 +130,6 @@ public class LRUCacheTester {
         final long bigTime = System.nanoTime() - bigStart;
         System.out.println(bigTime);
         System.out.println(smallTime);
-        assertTrue((Math.abs(bigTime - smallTime) < (.5 * smallAnwser)));
+        assertTrue((Math.abs(bigTime - smallTime) < smallTime));
     }
 }
