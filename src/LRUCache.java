@@ -37,7 +37,11 @@ public class LRUCache<T, U> implements Cache<T, U> {
 	public U get (T key) {
 		U value = _cache.get(key);
 
-		if (value == null) {
+		/*
+        Checks to see if the value is in the cache, and if it isn't it calls it from the data
+        provider and adds it to the cache
+        */
+        if (value == null) {
 			_numMiss++;
 
 			value = (U) _dataProvider.get(key);
