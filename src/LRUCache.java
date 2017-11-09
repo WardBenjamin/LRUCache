@@ -7,7 +7,8 @@ import java.util.Map;
  * eviction policy.
  */
 public class LRUCache<T, U> implements Cache<T, U> {
-    private DataProvider _dataProvider;
+
+	private DataProvider _dataProvider;
 	private HashMap<T, U> _cache;
 	private CallStack<T> _callStack;
 
@@ -66,11 +67,17 @@ public class LRUCache<T, U> implements Cache<T, U> {
 		return _numMiss;
 	}
 
+	/**
+	 * Returns the length of the cache
+	 * @return the length of the cache
+	 */
 	public int getCacheLength() {
 		return _cache.size();
 	}
 
-	//Debug
+	/**
+	 * Prints the cache
+	 */
 	public void printCache() {
         Iterator iter = (Iterator) _cache.entrySet().iterator();
 
@@ -82,17 +89,7 @@ public class LRUCache<T, U> implements Cache<T, U> {
         }
     }
 
-	// Debug
-    public T getMRU() {
-		return _callStack.getMRU();
-	}
-
-	// Debug
-	public T getLRU() {
-		return _callStack.getLRU();
-	}
-
-	public class CallStack<T> {
+	private class CallStack<T> {
 		private class Node {
 			Node _next;
 			Node _previous;
